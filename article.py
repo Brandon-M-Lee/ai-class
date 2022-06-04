@@ -14,7 +14,7 @@ except:
     chromedriver_autoinstaller.install(True)
     driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver.exe')  
 
-driver.implicitly_wait(10)
+driver.implicitly_wait(1)
 
 def get_company_list():
     stock_code = pd.read_csv('stock_code.csv', encoding='cp949')
@@ -36,8 +36,9 @@ def write_raw_data():
 def write_data():
     today = datetime.date.today()
     data = list()
+    df = pd.read_csv('stock_code.csv', encoding='cp949')
     with open('article_raw_data.txt', 'r', encoding='utf-8') as f:
-        with open('article_data.txt', 'w', encoding='utf-8') as f2:
+        with open('article_data.csv', 'w', encoding='utf-8') as f2:
             f2.truncate()
             f2.seek(0)
             for line in f:
@@ -55,6 +56,5 @@ def write_data():
                         data.append((company, date))
             data = list(set(data))
             for company, date in data:
-                f2.write(f'{company}\t{date}\n')
-
-write_data()
+                code = df.loc[df['종목명'] == company, '종목코드'].values[0]
+                f2.write(f'{company},{date},{code}\n')
