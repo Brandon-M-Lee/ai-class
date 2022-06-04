@@ -5,10 +5,25 @@ import FinanceDataReader as fdr
 import pandas as pd
 import matplotlib.pyplot as plt
 
+cnt=0
+
 def get_data(date, code):
     date = datetime.datetime.strptime(date, '%Y.%m.%d.')
-    delta = datetime.timedelta(days=10)
-    data = fdr.DataReader(code, date - delta, date + delta)
-    data['High'].plot()
+    data = fdr.DataReader(code, date)
+    return data
 
-get_data('2022.04.11.', '005301')
+def get_delta(date, data):
+    date = datetime.datetime.strptime(date, '%Y.%m.%d.')
+    date = datetime.datetime.strftime(date, '%Y-%m-%d')
+    return data.loc[date]['Close'] - data.loc[date]['Open']
+
+with open('article_data.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        company, date, code = line.strip().split('\t')
+        data = get_data(date, code)
+        delta = get_delta(date, data)
+        print(delta)
+        if delta > 0:
+            cnt+=1
+
+print(cnt/444)
