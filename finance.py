@@ -1,3 +1,4 @@
 import os
 os.system('pip3 install -r requirements.txt')
-from pykrx import stock
+import FinanceDataReader as fdr
+
