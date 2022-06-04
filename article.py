@@ -17,14 +17,12 @@ except:
 driver.implicitly_wait(10)
 
 def get_company_list():
-    path = 'stock_code.csv'
-    stock_code = pd.read_csv(path, encoding='cp949')
+    stock_code = pd.read_csv('stock_code.csv', encoding='cp949')
     company_list = list(stock_code['종목명'])
     return company_list
 
 def write_raw_data():
-    path = 'article_raw_data.txt'
-    with open(path, 'w', encoding='utf-8') as f:
+    with open('article_raw_data.txt', 'w', encoding='utf-8') as f:
         f.truncate()
         f.seek(0)
         for i in range(400):
@@ -37,11 +35,9 @@ def write_raw_data():
 
 def write_data():
     today = datetime.date.today()
-    raw_path = 'article_raw_data.txt'
-    path = 'article_data.txt'
     data = list()
-    with open(raw_path, 'r', encoding='utf-8') as f:
-        with open(path, 'w', encoding='utf-8') as f2:
+    with open('article_raw_data.txt', 'r', encoding='utf-8') as f:
+        with open('article_data.txt', 'w', encoding='utf-8') as f2:
             f2.truncate()
             f2.seek(0)
             for line in f:
