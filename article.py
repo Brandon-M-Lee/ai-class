@@ -38,7 +38,7 @@ def write_data():
     data = list()
     df = pd.read_csv('stock_code.csv', encoding='cp949')
     with open('article_raw_data.txt', 'r', encoding='utf-8') as f:
-        with open('article_data.csv', 'w', encoding='utf-8') as f2:
+        with open('article_data.txt', 'w', encoding='utf-8') as f2:
             f2.truncate()
             f2.seek(0)
             for line in f:
@@ -57,4 +57,8 @@ def write_data():
             data = list(set(data))
             for company, date in data:
                 code = df.loc[df['종목명'] == company, '종목코드'].values[0]
-                f2.write(f'{company},{date},{code}\n')
+                if len(str(code)) < 6:
+                    code = '0'*(6-len(str(code))) + str(code)
+                f2.write(f'{company}\t{date}\t{code}\n')
+
+write_data()
